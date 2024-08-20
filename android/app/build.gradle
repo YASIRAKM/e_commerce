@@ -1,0 +1,76 @@
+plugins {
+    id "com.android.application"
+    id 'com.google.gms.google-services'
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader("UTF-8") { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def flutterVersionCode = localProperties.getProperty("flutter.versionCode")
+if (flutterVersionCode == null) {
+    flutterVersionCode = "1"
+}
+
+def flutterVersionName = localProperties.getProperty("flutter.versionName")
+if (flutterVersionName == null) {
+    flutterVersionName = "1.0"
+}
+
+android {
+    namespace = "com.example.e_commerce_using_firebase"
+    compileSdk = flutter.compileSdkVersion
+    ndkVersion = flutter.ndkVersion
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        applicationId = "com.example.e_commerce_using_firebase"
+        minSdk = 23
+        targetSdk = 31
+        versionCode = flutterVersionCode.toInteger()
+        versionName = flutterVersionName
+    }
+
+    buildTypes {
+        release {
+            signingConfig = signingConfigs.debug
+        }
+    }
+}
+
+repositories {
+    google()
+    mavenCentral()
+    // Add other repositories if needed
+}
+
+dependencies {
+    implementation 'com.android.tools.build:gradle:8.0.2'
+    implementation 'com.google.gms:google-services:4.3.15'
+    implementation('some.library:dependency:version') {
+        exclude group: 'com.intellij', module: 'annotations'
+    }
+    implementation('another.library:dependency:version') {
+        exclude group: 'org.jetbrains', module: 'annotations'
+    }
+}
+
+configurations.all {
+    resolutionStrategy {
+        force 'org.jetbrains:annotations:23.0.0'
+    }
+}
+
+flutter {
+    source = "../.."
+}
